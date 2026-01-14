@@ -1,0 +1,7 @@
+{
+  "name": "Pet Platform",
+  "description": "A comprehensive pet platform prototype featuring commerce, community, and AI-powered design tools.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
