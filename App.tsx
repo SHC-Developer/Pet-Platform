@@ -10,6 +10,7 @@ import ProductDetailView from './components/ProductDetailView';
 import CartView from './components/CartView';
 import SearchView from './components/SearchView';
 import BottomNav from './components/BottomNav';
+import SplashScreen from './components/SplashScreen';
 import { Search, ShoppingBag, ChevronDown, ChevronLeft } from 'lucide-react';
 
 const App: React.FC = () => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [history, setHistory] = useState<AppView[]>([]);
   const [isMobile, setIsMobile] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   // Check if viewing on a mobile device to adjust layout behavior
   useEffect(() => {
@@ -27,6 +29,10 @@ const App: React.FC = () => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  const handleSplashFinish = () => {
+    setShowSplash(false);
+  };
 
   const navigateTo = (view: AppView, product?: Product) => {
     setHistory([...history, activeView]);
@@ -76,6 +82,7 @@ const App: React.FC = () => {
   return (
     <div className="flex justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-[430px] h-[100dvh] bg-white shadow-2xl relative overflow-hidden flex flex-col">
+        {showSplash && <SplashScreen onFinish={handleSplashFinish} />}
         
         {/* Dynamic Header */}
         {!isPlainView ? (
