@@ -79,10 +79,20 @@ const App: React.FC = () => {
   // Layout Wrapper:
   // If desktop (Vercel deployment view), show centered mobile frame.
   // If mobile, show full screen.
+  // 스플래시 화면이 표시 중이면 스플래시만 렌더링
+  if (showSplash) {
+    return (
+      <div className="flex justify-center min-h-screen bg-gray-100">
+        <div className="w-full max-w-[430px] h-[100dvh] bg-white shadow-2xl relative overflow-hidden flex flex-col">
+          <SplashScreen onFinish={handleSplashFinish} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-[430px] h-[100dvh] bg-white shadow-2xl relative overflow-hidden flex flex-col">
-        {showSplash && <SplashScreen onFinish={handleSplashFinish} />}
         
         {/* Dynamic Header */}
         {!isPlainView ? (
