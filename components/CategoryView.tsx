@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { View, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Product } from '../types';
-import { Star, ChevronDown, Filter } from 'lucide-react-native';
+import { Star, ChevronDown, Filter } from 'lucide-react';
 
 const MOCK_PRODUCTS: Product[] = [
   {
@@ -58,69 +57,58 @@ interface CategoryViewProps {
 
 const CategoryView: React.FC<CategoryViewProps> = ({ onProductClick }) => {
   return (
-    <ScrollView className="flex-1 bg-white p-4" showsVerticalScrollIndicator={false}>
-      <Text className="text-xl font-black mb-4">미용/관리</Text>
+    <div className="p-4 animate-fadeIn">
+      <h2 className="text-xl font-black mb-4">미용/관리</h2>
       
       {/* Filters */}
-      <View className="mb-6">
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="pb-2">
-          <TouchableOpacity className="flex-row items-center px-4 py-2 bg-orange-500 rounded-full mr-2">
-            <Filter size={14} color="#fff" />
-            <Text className="text-white text-xs font-bold ml-1">필터</Text>
-          </TouchableOpacity>
-          {['브랜드', '가격대', '평점', '배송방식'].map(f => (
-            <TouchableOpacity key={f} className="flex-row items-center px-4 py-2 border border-gray-200 rounded-full mr-2">
-              <Text className="text-xs text-gray-600 font-medium">{f}</Text>
-              <ChevronDown size={14} color="#9ca3af" style={{ marginLeft: 4, opacity: 0.4 }} />
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
+      <div className="flex flex-col gap-4 mb-6">
+        <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+            <button className="flex items-center whitespace-nowrap px-4 py-2 bg-orange-500 text-white rounded-full text-xs font-bold">
+                <Filter size={14} className="mr-1" /> 필터
+            </button>
+            {['브랜드', '가격대', '평점', '배송방식'].map(f => (
+                <button key={f} className="flex items-center whitespace-nowrap px-4 py-2 border border-gray-200 rounded-full text-xs text-gray-600 font-medium">
+                    {f} <ChevronDown size={14} className="ml-1 opacity-40" />
+                </button>
+            ))}
+        </div>
+      </div>
 
-      <View className="flex-row justify-between items-center mb-6">
-        <Text className="text-xs text-gray-500"><Text className="text-gray-900 font-bold">574</Text>개의 아이템</Text>
-        <TouchableOpacity className="flex-row items-center gap-1">
-          <Text className="text-xs font-bold text-gray-700">추천순</Text>
-          <ChevronDown size={14} color="#374151" />
-        </TouchableOpacity>
-      </View>
+      <div className="flex justify-between items-center mb-6">
+          <span className="text-xs text-gray-500"><strong className="text-gray-900">574</strong>개의 아이템</span>
+          <button className="text-xs font-bold flex items-center gap-1 text-gray-700">추천순 <ChevronDown size={14} /></button>
+      </div>
 
       {/* Product Grid */}
-      <View className="flex-row flex-wrap justify-between">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-10">
         {MOCK_PRODUCTS.map((p) => (
-          <TouchableOpacity 
-            key={p.id} 
-            onPress={() => onProductClick(p)} 
-            className="w-[48%] mb-10"
-          >
-            <View className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 mb-3 shadow-sm">
-              <Image source={{ uri: p.imageUrl }} className="w-full h-full" />
+          <div key={p.id} onClick={() => onProductClick(p)} className="group cursor-pointer">
+            <div className="relative aspect-square rounded-2xl overflow-hidden bg-gray-50 mb-3 shadow-sm">
+              <img src={p.imageUrl} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
               {p.badge && (
-                <View className="absolute top-0 left-0 bg-yellow-400 px-2 py-1 rounded-br-xl">
-                  <Text className="text-yellow-900 text-[10px] font-black">{p.badge}</Text>
-                </View>
+                  <div className="absolute top-0 left-0 bg-yellow-400 text-yellow-900 text-[10px] font-black px-2 py-1 rounded-br-xl">
+                      {p.badge}
+                  </div>
               )}
-            </View>
-            <View className="space-y-1">
-              <Text className="text-[10px] text-gray-400 font-bold">{p.brand}</Text>
-              <Text className="text-xs font-semibold leading-tight h-8 text-gray-800" numberOfLines={2}>{p.name}</Text>
-              <View className="flex-row items-center gap-2 mt-1">
-                <Text className="text-orange-500 font-black text-base">{p.discountRate}%</Text>
-                <Text className="text-base font-black text-gray-900">{p.price.toLocaleString()}원</Text>
-              </View>
-              <View className="flex-row items-center gap-1 mt-1">
-                <Star size={10} color="#FFB800" fill="#FFB800" />
-                <Text className="text-[10px] font-bold text-gray-900">{p.rating}</Text>
-                <Text className="text-[10px] text-gray-300">({p.reviews.toLocaleString()})</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
+            </div>
+            <div className="space-y-1">
+              <p className="text-[10px] text-gray-400 font-bold">{p.brand}</p>
+              <h3 className="text-xs font-semibold leading-tight h-8 line-clamp-2 text-gray-800">{p.name}</h3>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-orange-500 font-black text-base">{p.discountRate}%</span>
+                <span className="text-base font-black text-gray-900">{p.price.toLocaleString()}원</span>
+              </div>
+              <div className="flex items-center gap-1 mt-1">
+                <Star size={10} fill="#FFB800" className="text-yellow-400" />
+                <span className="text-[10px] font-bold text-gray-900">{p.rating}</span>
+                <span className="text-[10px] text-gray-300">({p.reviews.toLocaleString()})</span>
+              </div>
+            </div>
+          </div>
         ))}
-      </View>
-    </ScrollView>
+      </div>
+    </div>
   );
 };
-
-export default CategoryView;
 
 export default CategoryView;
